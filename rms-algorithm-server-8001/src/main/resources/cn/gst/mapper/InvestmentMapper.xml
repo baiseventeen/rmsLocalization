@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.InvestmentMapper">
+    <resultMap id="InvestmentMap" type="cn.gst.entity.Investment">
+        <id property="id" column="investment_id"/>
+        <result property="developerId" column="developer_id"/>
+        <result property="developerName" column="developer_name"/>
+        <result property="systemId" column="system_id"/>
+        <result property="systemName" column="system_name"/>
+        <result property="workload" column="workload"/>
+        <result property="workHour" column="work_hour"/>
+        <result property="date" column="date"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into investment(investment_id,
+                                  developer_id,
+                                  developer_name,
+                                  system_id,
+                                  system_name,
+                                  workload,
+                                  work_hour,
+                                  date)
+        values(#{investment.id},
+               #{investment.developerId},
+               #{investment.developerName},
+               #{investment.systemId},
+               #{investment.systemName},
+               #{investment.workload},
+               #{investment.workHour},
+               #{investment.date})
+    </insert>
+
+    <select id="findBySearch" resultMap="InvestmentMap">
+        select *
+        from investment
+        <where>
+            <if test="developerId != null and developerId != ''">
+                developer_id = #{developerId}
+            </if>
+        </where>
+    </select>
+</mapper>

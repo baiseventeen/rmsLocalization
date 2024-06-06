@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.PositionMapper">
+
+    <resultMap id="positionResultMap" type="cn.gst.domain.Position">
+        <id property="id" column="position_id"/>
+        <result property="positionName" column="position_name"/>
+        <result property="positionLevelId" column="position_level_id"/>
+        <result property="salaryMax" column="salary_max"/>
+        <result property="salaryMin" column="salary_min"/>
+        <result property="developmentTechId" column="development_tech_id"/>
+        <result property="productivity" column="productivity"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into resource_management.position (position_id, position_name, position_level_id, salary_max, salary_min, development_tech_id, productivity)
+        values (#{id},#{positionName},#{positionLevelId},#{salaryMax},#{salaryMin},#{developmentTechId},#{productivity})
+    </insert>
+
+
+    <delete id="delete">
+        delete from resource_management.position
+        where resource_management.position.position_id = #{id}
+    </delete>
+
+
+    <update id="update">
+        update resource_management.position set resource_management.position.position_id = #{id},
+                                                resource_management.position.position_name = #{positionName},
+                                                resource_management.position.position_level_id = #{positionLevelId},
+                                                resource_management.position.salary_max = #{salaryMax},
+                                                resource_management.position.salary_min = #{salaryMin},
+                                                development_tech_id = #{developmentTechId},
+                                                productivity = #{productivity}
+        where resource_management.position.position_id = #{id}
+    </update>
+
+
+    <select id="page" resultMap="positionResultMap">
+        select * from resource_management.position
+            <where>
+                <if test="queryInfo.name!=null">
+                    and position_name like concat('%',#{queryInfo.name},'%')
+                </if>
+                <if test="queryInfo.levelId!=null">
+                    and position_level_id = #{queryInfo.levelId}
+                </if>
+                <if test="queryInfo.developmentTechId!=null">
+                    and development_tech_id = #{queryInfo.developmentTechId}
+                </if>
+            </where>
+    </select>
+
+    <select id="findLevel" resultType="java.util.Map">
+        select * from position_level
+    </select>
+
+
+</mapper>

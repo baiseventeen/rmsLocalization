@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.AlgorithmSchedulingPeriodMapper">
+    <resultMap id="SchedulingPeriodMap" type="cn.gst.entity.SchedulingPeriod">
+        <id property="id" column="scheduling_period_id"/>
+        <result property="developerId" column="developer_id"/>
+        <result property="systemId" column="system_id"/>
+        <result property="numOfDays" column="days_num"/>
+        <result property="workload" column="workload"/>
+        <result property="saturation" column="saturation"/>
+        <result property="no" column="no"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into scheduling_period(scheduling_period_id,
+                                      developer_id,
+                                      system_id,
+                                      days_num,
+                                      workload,
+                                      saturation,
+                                      `no`)
+        values(#{schedulingPeriod.id},
+               #{schedulingPeriod.developerId},
+               #{schedulingPeriod.systemId},
+               #{schedulingPeriod.numOfDays},
+               #{schedulingPeriod.workload},
+               #{schedulingPeriod.saturation},
+               #{schedulingPeriod.no})
+    </insert>
+
+
+</mapper>

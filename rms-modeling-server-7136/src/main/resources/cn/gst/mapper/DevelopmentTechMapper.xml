@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.DevelopmentTechMapper">
+
+    <resultMap id="developmentTechResultMap" type="cn.gst.domain.DevelopmentTech">
+        <id property="id" column="development_tech_id"/>
+        <result property="name" column="development_tech_name"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into development_tech (development_tech_id, development_tech_name)
+        values (#{id},#{name})
+    </insert>
+
+    <select id="findAll" resultType="java.util.Map">
+        select * from development_tech
+    </select>
+
+
+
+
+</mapper>

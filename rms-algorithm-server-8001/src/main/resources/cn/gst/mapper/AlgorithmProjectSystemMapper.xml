@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.AlgorithmProjectSystemMapper">
+
+    <resultMap id="ProjectSystemMap" type="cn.gst.domain.ProjectSystem">
+        <id property="id" column="project_system_id" />
+        <result property="projectId" column="project_id" />
+        <result property="systemId" column="system_id" />
+        <result property="responsiblePersonId" column="system_responsible_person" />
+        <result property="totalWorkload" column="total_workload" />
+        <result property="demandWorkload" column="demand_workload" />
+        <result property="designWorkload" column="design_workload" />
+        <result property="developWorkload" column="develop_workload" />
+        <result property="testWorkload" column="test_workload" />
+        <result property="onlineWorkload" column="online_workload" />
+        <result property="actualWorkday" column="system_actual_workday" />
+        <result property="investedWorkday" column="system_invested_workday" />
+        <result property="actualWorkload" column="system_actual_workload" />
+        <result property="investedWorkload" column="system_invested_workload" />
+        <result property="state" column="system_state" />
+        <result property="version" column="system_version" />
+        <result property="name" column="system_name" />
+        <result property="difficultyRate" column="difficulty_rate" />
+        <result property="developmentTech" column="development_tech" />
+        <result property="projectName" column="project_name" />
+        <result property="priorityScore" column="priority_score" />
+    </resultMap>
+
+    <update id="update">
+        update project_system
+        set project_id = #{projectSystem.projectId},
+            system_id = #{projectSystem.systemId},
+            system_responsible_person = #{projectSystem.responsiblePersonId},
+            total_workload = #{projectSystem.totalWorkload},
+            demand_workload = #{projectSystem.demandWorkload},
+            design_workload = #{projectSystem.designWorkload},
+            develop_workload = #{projectSystem.developWorkload},
+            test_workload = #{projectSystem.testWorkload},
+            online_workload = #{projectSystem.onlineWorkload},
+            system_actual_workday = #{projectSystem.actualWorkday},
+            system_invested_workday = #{projectSystem.investedWorkday},
+            system_actual_workload = #{projectSystem.actualWorkload},
+            system_invested_workload = #{projectSystem.investedWorkload},
+            system_state = #{projectSystem.state},
+            system_version = #{projectSystem.version}
+        where project_system_id = #{projectSystem.id}
+    </update>
+
+    <update id="updateSystem">
+        update `system`
+        set system_name = #{projectSystem.name},
+            difficulty_rate = #{projectSystem.difficultyRate},
+            development_tech = #{projectSystem.developmentTech},
+            priority_score = #{projectSystem.priorityScore}
+        where system_id = #{projectSystem.systemId}
+    </update>
+
+    <delete id="delete">
+        delete from project_system
+        where system_id = #{systemId}
+    </delete>
+
+    <delete id="deleteSystem">
+        delete from `system`
+        where system_id = #{systemId}
+    </delete>
+
+    <select id="findAll" resultMap="ProjectSystemMap">
+        select *
+        from project_system p, `system` s
+        where p.system_id = s.system_id
+    </select>
+
+    <select id="findByProjectId" resultMap="ProjectSystemMap">
+        select *
+        from project_system p, `system` s
+        <where>
+          p.system_id = s.system_id
+          <if test="projectId != null and projectId != ''">
+              and project_id = #{projectId}
+          </if>
+        </where>
+    </select>
+
+    <select id="findBySystemId" resultMap="ProjectSystemMap">
+        select *
+        from project_system p, `system` s
+        where p.system_id = #{systemId} and p.system_id = s.system_id
+    </select>
+
+    <select id="findByProjectIdAndDevelopmentTech" resultMap="ProjectSystemMap">
+        select *
+        from project_system p, `system` s
+        where p.system_id = s.system_id and project_id = #{projectId} and development_tech = #{developmentTech}
+    </select>
+
+    <select id="findBySearch" resultMap="ProjectSystemMap">
+        select *
+        from `system` s
+        left join `project_system` ps on ps.system_id = s.system_id
+        left join `project` p on p.project_id = ps.project_id
+        left join developer d on ps.system_responsible_person = d.developer_id
+        <where>
+            <if test="query.projectId != null and query.projectId != ''">
+                and p.project_id = #{query.projectId}
+            </if>
+            <if test="query.name != null and query.name != ''">
+                and s.system_name like concat('%', #{query.name}, '%')
+            </if>
+            <if test="query.state != null">
+                and ps.system_state = #{query.state}
+            </if>
+            <if test="query.developmentTech != null and query.name != ''">
+                and s.development_tech = #{query.developmentTech}
+            </if>
+            <if test="query != null and query.responsiblePersonName != null and query.responsiblePersonName != ''">
+                and developer_name like concat('%', #{query.responsiblePersonName}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="getLastEndTimeBySystemId" resultType="java.util.Date">
+        select p.last_end_time
+        from project_system ps left join project p on ps.project_id = p.project_id
+        where ps.system_id = #{systemId}
+    </select>
+
+    <select id="findProjectBySystemId" resultType="cn.gst.domain.Project">
+        select ps.project_id as id, p.project_name as name
+        from project_system ps left join project p on ps.project_id = p.project_id
+        where ps.system_id = #{systemId}
+    </select>
+
+    <insert id="add">
+        insert into project_system(project_system_id,
+                                   project_id,
+                                   system_id,
+                                   system_responsible_person,
+                                   total_workload,
+                                   demand_workload,
+                                   design_workload,
+                                   develop_workload,
+                                   test_workload,
+                                   online_workload,
+                                   system_actual_workday,
+                                   system_invested_workday,
+                                   system_actual_workload,
+                                   system_invested_workload,
+                                   system_state,
+                                   system_version)
+        values(#{projectSystem.id},
+               #{projectSystem.projectId},
+               #{projectSystem.systemId},
+               #{projectSystem.responsiblePersonId},
+               #{projectSystem.totalWorkload},
+               #{projectSystem.demandWorkload},
+               #{projectSystem.designWorkload},
+               #{projectSystem.developWorkload},
+               #{projectSystem.testWorkload},
+               #{projectSystem.onlineWorkload},
+               #{projectSystem.actualWorkday},
+               #{projectSystem.investedWorkday},
+               #{projectSystem.actualWorkload},
+               #{projectSystem.investedWorkload},
+               #{projectSystem.state},
+               #{projectSystem.version})
+    </insert>
+
+    <insert id="addSystem">
+        insert into `system`(system_id,
+                             system_name,
+                             difficulty_rate,
+                             development_tech)
+        values(#{projectSystem.systemId},
+               #{projectSystem.name},
+               #{projectSystem.difficultyRate},
+               #{projectSystem.developmentTech})
+    </insert>
+
+</mapper>

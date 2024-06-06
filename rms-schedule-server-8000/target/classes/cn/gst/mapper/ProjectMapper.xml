@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.ProjectMapper">
+
+    <!--
+        1、专门定义一个结果映射，在这个结果映射当中指定数据库表的字段名和Java类的属性名的对应关系
+        2、type属性：用来指定POJO类的类名
+        3、id属性：指定resultMap的唯一标识，这个id将来要在select标签中使用
+    -->
+    <resultMap id="projectMap" type="cn.gst.domain.Project">
+        <!--如果数据库表中有主键，一般都是有主键，要不然不符合数据库设计第一范式-->
+        <!--如果有主键，建议这里配置一个id标签，这样的配置可以让MyBatis提高效率-->
+        <id property="id" column="project_id" />
+        <!--
+            property后面填写的是POJO类的属性名
+            column后面填写数据库表的字段名
+        -->
+        <result property="name"                             column="project_name" />
+        <result property="version"                          column="project_version" />
+        <result property="info"                             column="project_info" />
+        <result property="responsiblePersonId"              column="project_responsible_person" />
+        <result property="skillResponsiblePersonId"         column="skill_responsible_person" />
+        <result property="productResponsiblePersonId"       column="product_responsible_person" />
+        <result property="scheduleTotalStartTime"           column="schedule_total_start_time" />
+        <result property="scheduleTotalEndTime"             column="schedule_total_end_time" />
+        <result property="productScheduleStartTime"         column="product_schedule_start_time" />
+        <result property="productScheduleEndTime"           column="product_schedule_end_time" />
+        <result property="designScheduleStartTime"          column="design_schedule_start_time" />
+        <result property="designScheduleEndTime"            column="design_schedule_end_time" />
+        <result property="developScheduleStartTime"         column="develop_schedule_start_time" />
+        <result property="developScheduleEndTime"           column="develop_schedule_end_time" />
+        <result property="testScheduleStartTime"            column="test_schedule_start_time" />
+        <result property="testScheduleEndTime"              column="test_schedule_end_time" />
+        <result property="onlineScheduleEndTime"            column="online_schedule_end_time" />
+        <result property="lastEndTime"                      column="last_end_time" />
+        <result property="state"                            column="project_state" />
+        <result property="scheduleWorkday"                  column="project_schedule_workday" />
+        <result property="actualWorkday"                    column="project_actual_workday" />
+        <result property="scheduleWorkload"                 column="project_schedule_workload" />
+        <result property="actualWorkload"                   column="project_actual_workload" />
+        <result property="scheduleCost"                     column="project_schedule_cost" />
+        <result property="actualCost"                       column="project_actual_cost" />
+        <result property="investedWorkday"                  column="project_invested_workday" />
+        <result property="investedWorkload"                 column="project_invested_workload" />
+        <result property="investedCost"                     column="project_invested_cost" />
+        <result property="priorityLevel"                    column="priority_level" />
+        <result property="createTime"                       column="project_create_time" />
+        <result property="createPersonId"                   column="project_create_person" />
+    </resultMap>
+
+    <insert id="add">
+        insert into project(project_id,
+                            project_name,
+                            project_version,
+                            project_info,
+                            project_responsible_person,
+                            skill_responsible_person,
+                            product_responsible_person,
+                            schedule_total_start_time,
+                            schedule_total_end_time,
+                            product_schedule_start_time,
+                            product_schedule_end_time,
+                            design_schedule_start_time,
+                            design_schedule_end_time,
+                            develop_schedule_start_time,
+                            develop_schedule_end_time,
+                            test_schedule_start_time,
+                            test_schedule_end_time,
+                            online_schedule_end_time,
+                            last_end_time,
+                            project_state,
+                            project_schedule_workday,
+                            project_actual_workday,
+                            project_schedule_workload,
+                            project_actual_workload,
+                            project_schedule_cost,
+                            project_actual_cost,
+                            project_invested_workday,
+                            project_invested_workload,
+                            project_invested_cost,
+                            priority_level,
+                            project_create_time,
+                            project_create_person
+                    )values(#{project.id},
+                            #{project.name},
+                            #{project.version},
+                            #{project.info},
+                            #{project.responsiblePersonId},
+                            #{project.skillResponsiblePersonId},
+                            #{project.productResponsiblePersonId},
+                            #{project.scheduleTotalStartTime},
+                            #{project.scheduleTotalEndTime},
+                            #{project.productScheduleStartTime},
+                            #{project.productScheduleEndTime},
+                            #{project.designScheduleStartTime},
+                            #{project.designScheduleEndTime},
+                            #{project.developScheduleStartTime},
+                            #{project.developScheduleEndTime},
+                            #{project.testScheduleStartTime},
+                            #{project.testScheduleEndTime},
+                            #{project.onlineScheduleEndTime},
+                            #{project.lastEndTime},
+                            #{project.state},
+                            #{project.scheduleWorkday},
+                            #{project.actualWorkday},
+                            #{project.scheduleWorkload},
+                            #{project.actualWorkload},
+                            #{project.scheduleCost},
+                            #{project.actualCost},
+                            #{project.investedWorkday},
+                            #{project.investedWorkload},
+                            #{project.investedCost},
+                            #{project.priorityLevel},
+                            #{project.createTime},
+                            #{project.createPersonId})
+    </insert>
+    <update id="update">
+        update project
+        set project_name = #{project.name},
+            project_version = #{project.version},
+            project_info = #{project.info},
+            project_responsible_person = #{project.responsiblePersonId},
+            skill_responsible_person = #{project.skillResponsiblePersonId},
+            product_responsible_person = #{project.productResponsiblePersonId},
+            schedule_total_start_time = #{project.scheduleTotalStartTime},
+            schedule_total_end_time = #{project.scheduleTotalEndTime},
+            product_schedule_start_time = #{project.productScheduleStartTime},
+            product_schedule_end_time = #{project.productScheduleEndTime},
+            design_schedule_start_time = #{project.designScheduleStartTime},
+            design_schedule_end_time = #{project.designScheduleEndTime},
+            develop_schedule_start_time = #{project.developScheduleStartTime},
+            develop_schedule_end_time = #{project.developScheduleEndTime},
+            test_schedule_start_time = #{project.testScheduleStartTime},
+            test_schedule_end_time = #{project.testScheduleEndTime},
+            online_schedule_end_time = #{project.onlineScheduleEndTime},
+            last_end_time = #{project.lastEndTime},
+            project_state = #{project.state},
+            project_schedule_workday = #{project.scheduleWorkday},
+            project_actual_workday = #{project.actualWorkday},
+            project_schedule_workload = #{project.scheduleWorkload},
+            project_actual_workload = #{project.actualWorkload},
+            project_schedule_cost = #{project.scheduleCost},
+            project_actual_cost = #{project.actualCost},
+            project_invested_workday = #{project.investedWorkday},
+            project_invested_workload = #{project.investedWorkload},
+            project_invested_cost = #{project.investedCost},
+            priority_level = #{project.priorityLevel},
+            project_create_time = #{project.createTime},
+            project_create_person = #{project.createPersonId}
+        where project_id = #{project.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from project
+        where project_id = #{id}
+    </delete>
+
+
+    <select id="findAll" resultMap="projectMap">
+        select *
+        from `project`
+    </select>
+
+    <select id="findById" resultMap="projectMap">
+        select *
+        from `project`
+        where project_id = #{id}
+    </select>
+
+    <select id="findBySearch" resultMap="projectMap">
+        select *
+        from `project` p left join developer d on p.project_responsible_person = d.developer_id
+        <where>
+            <if test="query != null and query.name != null and query.name != ''">
+                and project_name like concat('%', #{query.name}, '%')
+            </if>
+            <if test="query != null and query.version != null and query.version != ''">
+                and project_version like concat('%', #{query.version}, '%')
+            </if>
+            <if test="query != null and query.responsiblePersonName != null and query.responsiblePersonName != ''">
+                and developer_name like concat('%', #{query.responsiblePersonName}, '%')
+            </if>
+            <if test="query != null and query.priorityLevel != null">
+                and priority_level = #{query.priorityLevel}
+            </if>
+            <if test="query != null and query.state != null">
+                and project_state = #{query.state}
+            </if>
+            <if test="query != null and query.startLastEndTime != null">
+                <![CDATA[and DATE_FORMAT(last_end_time, '%Y-%m-%d') >= DATE_FORMAT(#{query.startLastEndTime}, '%Y-%m-%d')]]>
+            </if>
+            <if test="query != null and query.endLastEndTime != null">
+                <![CDATA[and DATE_FORMAT(last_end_time, '%Y-%m-%d') <= DATE_FORMAT(#{query.endLastEndTime}, '%Y-%m-%d')]]>
+            </if>
+        </where>
+    </select>
+    
+</mapper>

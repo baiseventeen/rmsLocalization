@@ -1,0 +1,27 @@
+server:
+  port: 7135
+spring:
+  application:
+    name: login-server
+  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://172.2.0.176:3306/resource_management?useSSL=false
+#    url: jdbc:mysql://${server.address}:3306/resource_management?useSSL=false
+#    username: root
+#    password: 88888888
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/resource_management?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+    username: root
+    password: 123321123b
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 #注册到的nacos的地址
+        ip: 127.0.0.1 #启动在本机ip
+mybatis:
+  type-aliases-package:
+  mapper-locations: classpath:cn/gst/mapper/*Mapper.xml
+
+logging:
+  level:
+    cn.gst: trace

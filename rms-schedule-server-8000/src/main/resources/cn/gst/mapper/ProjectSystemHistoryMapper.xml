@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.ProjectSystemHistoryMapper">
+
+    <resultMap id="ProjectSystemMap" type="cn.gst.domain.ProjectSystem">
+        <id property="id" column="project_system_id" />
+        <result property="projectId" column="project_id" />
+        <result property="systemId" column="system_id" />
+        <result property="responsiblePersonId" column="system_responsible_person" />
+        <result property="totalWorkload" column="total_workload" />
+        <result property="demandWorkload" column="demand_workload" />
+        <result property="designWorkload" column="design_workload" />
+        <result property="developWorkload" column="develop_workload" />
+        <result property="testWorkload" column="test_workload" />
+        <result property="onlineWorkload" column="online_workload" />
+        <result property="actualWorkday" column="system_actual_workday" />
+        <result property="investedWorkday" column="system_invested_workday" />
+        <result property="actualWorkload" column="system_actual_workload" />
+        <result property="investedWorkload" column="system_invested_workload" />
+        <result property="state" column="system_state" />
+        <result property="version" column="system_version" />
+        <result property="name" column="system_name" />
+        <result property="difficultyRate" column="difficulty_rate" />
+        <result property="developmentTech" column="development_tech" />
+    </resultMap>
+
+    <select id="findBySearch" resultMap="ProjectSystemMap">
+        select *
+        from project_system_history
+        <where>
+            <if test="query.projectId != null and query.projectId != ''">
+                and project_id = #{query.projectId}
+            </if>
+            <if test="query.version != null and query.version != ''">
+                and system_version = #{query.version}
+            </if>
+            <if test="query.systemId != null and query.systemId != ''">
+                and system_id = #{query.systemId}
+            </if>
+        </where>
+    </select>
+    <select id="findById" resultMap="ProjectSystemMap">
+        select *
+        from project_system_history
+        where #{id} = project_system_id
+    </select>
+
+    <insert id="add">
+        insert into project_system_history(project_system_id,
+                                           project_id,
+                                           system_id,
+                                           system_responsible_person,
+                                           total_workload,
+                                           demand_workload,
+                                           design_workload,
+                                           develop_workload,
+                                           test_workload,
+                                           online_workload,
+                                           system_actual_workday,
+                                           system_invested_workday,
+                                           system_actual_workload,
+                                           system_invested_workload,
+                                           system_state,
+                                           system_version,
+                                           system_name,
+                                           difficulty_rate,
+                                           development_tech)
+        values(#{projectSystem.id},
+               #{projectSystem.projectId},
+               #{projectSystem.systemId},
+               #{projectSystem.responsiblePersonId},
+               #{projectSystem.totalWorkload},
+               #{projectSystem.demandWorkload},
+               #{projectSystem.designWorkload},
+               #{projectSystem.developWorkload},
+               #{projectSystem.testWorkload},
+               #{projectSystem.onlineWorkload},
+               #{projectSystem.actualWorkday},
+               #{projectSystem.investedWorkday},
+               #{projectSystem.actualWorkload},
+               #{projectSystem.investedWorkload},
+               #{projectSystem.state},
+               #{projectSystem.version},
+               #{projectSystem.name},
+               #{projectSystem.difficultyRate},
+               #{projectSystem.developmentTech})
+    </insert>
+
+</mapper>

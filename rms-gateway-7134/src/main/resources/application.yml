@@ -1,0 +1,65 @@
+server:
+  port: 7134
+
+logging:
+  level:
+    cn.gst: trace
+
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        ip: 127.0.0.1
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true #开启服务名小写
+      routes:
+#        【例】
+#        - id: application-user #指定服务名
+#          uri: lb://user-server #去注册中心找这个服务名
+#          predicates: #断言，匹配访问的路径
+#            - Path=/userserver/**    #服务访问路径
+#          filters:
+#            - StripPrefix=1    #请求转发的时候会去掉 /userserver访问路径
+###############################   登录模块    ###########################################
+        - id: application-entry
+          uri: lb://login-server
+          predicates:
+            - Path=/entry/**
+          filters:
+            - StripPrefix=1
+
+###############################   建模模块    ###########################################
+        - id: application-modeling
+          uri: lb://modeling-server
+          predicates:
+            - Path=/modeling/**
+          filters:
+            - StripPrefix=1
+###############################   计划模块    ###########################################
+        - id: application-schedule
+          uri: lb://schedule-server
+          predicates:
+            - Path=/schedule/**
+          filters:
+            - StripPrefix=1
+
+###############################   评价模块    ###########################################
+        - id: application-evaluate
+          uri: lb://evaluate-server
+          predicates:
+            - Path=/evaluate/**
+          filters:
+            - StripPrefix=1
+###############################   算法模块    ###########################################
+        - id: application-algorithm
+          uri: lb://algorithm-server
+          predicates:
+            - Path=/algorithm/**
+          filters:
+            - StripPrefix=1

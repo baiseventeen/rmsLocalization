@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.AlterationMapper">
+    <resultMap id="AlterationMap" type="cn.gst.entity.Alteration">
+        <id property="id" column="id"/>
+        <result property="requestDeveloperId" column="request_developer_id"/>
+        <result property="requestDate" column="request_date"/>
+        <result property="processDeveloperId" column="process_developer_id"/>
+        <result property="processDate" column="process_date"/>
+        <result property="reprocessDeveloperId" column="reprocess_developer_id"/>
+        <result property="reprocessDate" column="reprocess_date"/>
+        <result property="state" column="state"/>
+        <result property="level" column="level"/>
+        <result property="type" column="type"/>
+        <result property="content" column="content"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into alteration(id,
+                               request_developer_id,
+                               request_date,
+                               process_developer_id,
+                               process_date,
+                               reprocess_developer_id,
+                               reprocess_date,
+                               `state`,
+                               `level`,
+                               `type`,
+                               content)
+        values(#{alteration.id},
+               #{alteration.requestDeveloperId},
+               #{alteration.requestDate},
+               #{alteration.processDeveloperId},
+               #{alteration.processDate},
+               #{alteration.reprocessDeveloperId},
+               #{alteration.reprocessDate},
+               #{alteration.state},
+               #{alteration.level},
+               #{alteration.type},
+               #{alteration.content})
+    </insert>
+
+    <update id="update">
+        update alteration
+        set request_developer_id = #{alteration.requestDeveloperId},
+            request_date = #{alteration.requestDate},
+            process_developer_id = #{alteration.processDeveloperId},
+            process_date = #{alteration.processDate},
+            reprocess_developer_id = #{alteration.reprocessDeveloperId},
+            reprocess_date = #{alteration.reprocessDate},
+            `state` = #{alteration.state},
+            `level` = #{alteration.level},
+            `type` = #{alteration.type},
+            `content` = #{alteration.content}
+        where id = #{alteration.id}
+    </update>
+
+    <select id="findWithManager" resultMap="AlterationMap">
+        select *
+        from alteration
+        where `level` = 1 and state = 0
+    </select>
+
+    <select id="findWithAdmin" resultMap="AlterationMap">
+        select *
+        from alteration
+        where `level` = 2 and state = 0
+    </select>
+
+    <select id="findByRequestDeveloperId" resultMap="AlterationMap">
+        select *
+        from alteration
+        where request_developer_id = #{developerId}
+    </select>
+
+</mapper>

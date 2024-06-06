@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gst.mapper.DeveloperMapper">
+
+    <!--
+        1、专门定义一个结果映射，在这个结果映射当中指定数据库表的字段名和Java类的属性名的对应关系
+        2、type属性：用来指定POJO类的类名
+        3、id属性：指定resultMap的唯一标识，这个id将来要在select标签中使用
+    -->
+    <resultMap id="developerResultMap" type="cn.gst.domain.Developer">
+        <!--如果数据库表中有主键，一般都是有主键，要不然不符合数据库设计第一范式-->
+        <!--如果有主键，建议这里配置一个id标签，这样的配置可以让MyBatis提高效率-->
+        <id property="id" column="developer_id" />
+        <!--
+            property后面填写的是POJO类的属性名
+            column后面填写数据库表的字段名
+        -->
+        <result property="name" column="developer_name" />
+        <result property="birthday" column="developer_birthday" />
+        <result property="phone" column="developer_phone" />
+        <result property="onboardingTime" column="developer_onboarding_time" />
+        <result property="college" column="developer_college"/>
+        <result property="educationBackground" column="developer_education_background"/>
+        <result property="salary" column="developer_salary"/>
+        <result property="groupId" column="group_id"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into developer (developer_id,developer_name,developer_birthday,developer_phone,
+                               developer_onboarding_time,developer_college,developer_education_background,
+                               developer_salary,group_id)
+        values (#{id},#{name},#{birthday},#{phone},#{onboardingTime},
+                #{college},#{educationBackground},#{salary},#{groupId})
+    </insert>
+
+    <delete id="delete">
+        delete from developer where developer_id=#{id}
+    </delete>
+
+    <update id="update">
+        update developer set developer_id=#{id},
+                             developer_name=#{name},
+                             developer_birthday=#{birthday},
+                             developer_phone=#{phone},
+                             developer_onboarding_time=#{onboardingTime},
+                             developer_college=#{college},
+                             developer_education_background=#{educationBackground},
+                             developer_salary=#{salary},
+                             group_id=#{groupId}
+                         where developer_id=#{id}
+    </update>
+
+    <!--select标签中的resultMap属性用来指定使用哪个结果映射，resultMap后面的值是resultMap的id-->
+    <select id="page" resultMap="developerResultMap">
+        select * from developer
+            <where>
+                <if test="queryInfo.id!=null and queryInfo.id!=''">
+                    and developer_id = #{queryInfo.id}
+                </if>
+                <if test="queryInfo.name!=null and queryInfo.name!=''">
+                    and developer_name like concat ("%",#{queryInfo.name},"%")
+                </if>
+                <if test="queryInfo.startBirthDate!=null">
+                    and developer_birthday &gt;= #{queryInfo.startBirthDate}
+                </if>
+                <if test="queryInfo.endBirthDate!=null">
+                    and developer_birthday &lt;= #{queryInfo.endBirthDate}
+                </if>
+                <if test="queryInfo.startOnBoardDate!=null">
+                    and developer_onboarding_time &gt;= #{queryInfo.startOnBoardDate}
+                </if>
+                <if test="queryInfo.endOnBoardDate!=null">
+                    and developer_onboarding_time &lt;= #{queryInfo.endOnBoardDate}
+                </if>
+            </where>
+    </select>
+
+    <select id="findAll" resultType="cn.gst.domain.Developer">
+        select * from resource_management.developer
+    </select>
+
+</mapper>
