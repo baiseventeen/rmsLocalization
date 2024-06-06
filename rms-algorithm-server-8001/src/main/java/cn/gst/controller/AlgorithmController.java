@@ -51,5 +51,6 @@ public class AlgorithmController {
 
         return ResultBean.success("计划生成成功");
 
+
     }
 }
