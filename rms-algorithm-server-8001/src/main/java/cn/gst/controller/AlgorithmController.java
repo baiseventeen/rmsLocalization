@@ -50,5 +50,6 @@ public class AlgorithmController {
         mailService.sendEMail();
 
         return ResultBean.success("计划生成成功");
+
     }
 }
